@@ -1,0 +1,259 @@
+config MACH_LGE
+	bool
+
+menu "LGE Device-Specific Changes"
+
+menu "LGE Board Selection"
+
+config MACH_X3
+	depends on ARCH_TEGRA
+	select MACH_LGE
+	select MACH_HAS_SND_SOC_TEGRA_MAX98088 if SND_SOC
+	bool "TEGRA X3"
+	help
+	  Support for the LGE X3  
+
+config MACH_X3_FLASHLESS
+	depends on MACH_X3
+	tristate "USB HSIC Baseband Driver"
+	help
+	  Support for the LGE X3 FLASHLESS	  
+	  
+endmenu
+
+menu "LGE LCD / Backlight Selection"
+	  
+config MACH_X3_HD_LGD
+	bool "TARGET_X3_HD_LGD"
+	help
+	  Support for the X3 HDLCD LGD
+
+config MACH_X3_HD_HITACHI
+	bool "TARGET_X3_HD_HITACHI"
+	help
+	  Support for the X3 HDLCD HITACHI
+
+config MACH_SOLOMON_GPIO_SWITCH_SPI
+	bool "MACH_SOLOMON_CONVERTOR"
+	help
+	  Support for the LGHDK SOLOMON CONVERTOR
+	  
+config MACH_TOSHIBA_GPIO_SWITCH_SPI
+	bool "MACH_TOSHIBA_CONVERTOR"
+	help
+	  Support for the LGHDK TOSHIBA CONVERTOR	
+	  
+config MACH_RGB_CONVERTOR_SPI
+	bool "MACH_RGB_CONVERTOR"
+	help
+	  Support for the LGHDK RGB CONVERTOR	    	  	  
+
+config TEGRA_X3_DSI
+	depends on MACH_X3
+	select TEGRA_DSI
+	bool "Support DSI panel on X3"
+	help
+	  Support for DSI Panel on Nvidia X3
+		
+config MACH_X3_SPI_EMU
+      depends on MACH_X3
+      bool "Support SPI EMU panel on X3"
+      help
+      Support for SPI EMU on Nvidia X3
+
+source "drivers/video/tegra/mhl/Kconfig"
+
+config BACKLIGHT_LM353X
+    bool "national lm353X dc-dc Backlight"
+    help
+      If you have a national lm353X say Y to enable the
+      backlight driver
+
+endmenu
+
+comment "Bluetooth driver Selection"
+config BCM4330_RFKILL
+    bool "Enable BCM4330 RFKILL driver"
+    depends on RFKILL
+    default n
+    ---help---
+    Adds BCM4330 RFKILL driver for Broadcom BCM4330 chipset
+
+config BRCM_LPM
+    bool "BRCM LPM - Low Power Mode"
+    depends on BCM4330_RFKILL
+
+config BRCM_BT_WAKE
+    bool "BRCM BT Wakeup"
+    depends on BRCM_LPM
+
+config BRCM_HOST_WAKE
+    bool "BRCM Host Wakeup"
+    depends on BRCM_LPM
+
+config BD_ADDRESS
+    bool "Read/Write Bluetooth Address"
+    default n
+    ---help---
+    LGE added: It supports Bluetooth address Read / Write functionality on user mode.
+
+source "drivers/misc/inv_mpu/Kconfig"
+
+comment "Battery / Charger / Muic driver Selection"
+
+config LGE_BATTERY
+    bool "LG Battery Driver"
+    help
+      Say Y to enable support for battery driver.
+
+config MAX8971_CHARGER
+    bool "MAX8971 charger support"
+    help
+      Say Y here to enable support for the charger in the maxim MAX8971 charger.
+
+config BATTERY_MAX17043
+    tristate "Maxim MAX17043 Fuel Gauge"
+    depends on I2C 
+    help
+      MAX17043 is fuel-gauge systems for lithium-ion (Li+) batteries in 
+      handheld and portable equipment. The MAX17043 is configured to 
+      operate with a single lithium cell
+
+config ADC_TSC2007
+	bool "TSC2007 ADC Driver"
+	default n
+	help
+	  Say Y here to enable support ADC in TSC2007
+
+source "drivers/misc/muic/Kconfig"
+
+comment "Touch driver Selection"
+
+config TOUCHSCREEN_SYNAPTICS_COMMON
+    tristate "Touch touchscreen for T3203"
+    depends on I2C
+    help
+      This enables support for Synaptics T1320 over I2C based touchscreens.
+
+config TOUCHSCREEN_SYNAPTICS_T1320
+    tristate "Touchright serial touchscreen"
+    depends on I2C
+    help
+      This enables support for Synaptics T1320 over I2C based touchscreens.
+
+config TOUCHSCREEN_SYNAPTICS_T1320_HD
+    tristate "Touch touchscreen for HDLCD"
+    depends on I2C
+    help
+      This enables support for Synaptics T1320 over I2C based touchscreens.
+
+
+config LGE_TOUCH_SYNAPTICS_FW_UPGRADE
+    bool "Synaptics ClearPad General F/W upgread"
+    depends on TOUCHSCREEN_SYNAPTICS_T1320_HD
+    help
+      This enables support for Synaptics general F/W upgrade.
+
+config TOUCHSCREEN_SYNAPTICS_T3000
+    tristate "Touch touchscreen for synaptics T3000"
+    depends on I2C
+    help
+      This enables support for Synaptics T1320 over I2C based touchscreens.
+
+comment "Camera driver Selection"
+ 
+config TORCH_LM3559
+    bool "LM3559 FLASH LED"
+    depends on I2C && ARCH_TEGRA
+    default y
+        ---help---
+          This is a driver for the "LM3559 flash/torch camera device
+
+config VIDEO_IMX111
+        tristate "IMX111 camera sensor support"
+        depends on I2C && ARCH_TEGRA
+        ---help---
+          This is a driver for the IMX111 camera sensor
+          for use with the tegra isp.
+
+config VIDEO_DW9714
+        tristate "DW9714(VCM) focuser support"
+        depends on I2C && ARCH_TEGRA
+        ---help---
+          This is a  driver for the DW9714 VCM focuser
+          for use with the tegra isp.
+          
+config VIDEO_IMX119
+        tristate "IMX119 camera sensor support"
+        depends on I2C && ARCH_TEGRA
+        ---help---
+          This is a driver for the Sony IMX119 camera sensor
+          for use with the tegra isp.
+
+config VIDEO_MT9M114
+        tristate "MT9M114 camera sensor support"
+        depends on I2C && ARCH_TEGRA
+        ---help---
+          This is a driver for the Omnivision MT9M114 camera sensor
+          for use with the tegra isp.
+
+config REGULATOR_CAM_SUBPMIC_LP8720
+    bool "SUB PMIC LP8720"
+    depends on I2C 
+    default y
+    help
+      Support for LP8720 SUB PMIC driver
+
+comment "Debug/ Vibrator/ etc driver Selection"
+
+config LGE_ERS
+    bool "LG Error Reporting System Device Driver"
+    default n
+    ---help---
+    LG Error Reporting System Device Driver
+
+config LGE_NXP_NFC
+    bool "LGE NXP NFC"
+    default n
+    help
+      LGE NXP NFC
+
+config NFC_DEVICES
+    bool "Near Field Communication (NFC) devices"
+    default n
+    help
+      NFC DEVICES
+      
+config LGE_NFC_PN544
+    bool "LGE NFC PN544"
+    default n
+    help
+      LGE NFC PN544
+
+config TSPDRV
+    bool "tspdrv"
+    default y
+
+config X3_REBOOT_MONITOR
+      depends on (MACH_X3 && ANDROID_RAM_CONSOLE)
+      default n
+      bool "Support X3 Reboot Monitor"
+      help
+       Panic and System Reboot Monitoring for Hidden Reset and log service	  
+
+config X3_PMIC_POWERKEY
+      default n
+      bool "Support X3 PMIC Powerkey"
+
+config MACH_X3_DUMP_GPIO
+	depends on MACH_X3
+	bool "GPIO Dump to debug sleep current"
+	help
+	  Support for the LGE X3 GPIO DUMP	      	
+config X3_CPWATCHER
+      bool "X3 CP Status Watcher Driver"
+      default y
+      depends on MACH_X3
+      help
+        Support for CP Status Watcher driver
+endmenu

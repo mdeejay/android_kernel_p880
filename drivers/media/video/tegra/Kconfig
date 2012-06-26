@@ -1,0 +1,58 @@
+source "drivers/media/video/tegra/avp/Kconfig"
+source "drivers/media/video/tegra/mediaserver/Kconfig"
+source "drivers/media/video/tegra/nvavp/Kconfig"
+
+config TEGRA_CAMERA
+        bool "Enable support for tegra camera/isp hardware"
+        depends on ARCH_TEGRA
+        default y
+        help
+          Enables support for the Tegra camera interface
+          If unsure, say Y
+
+config TEGRA_DTV
+        bool "Enable support for tegra dtv interface"
+        depends on ARCH_TEGRA
+        help
+          Enables support for the Tegra dtv interface
+
+          If unsure, say Y
+
+config VIDEO_IMX119
+        tristate "IMX119 camera sensor support"
+        depends on I2C && ARCH_TEGRA
+        default y
+        ---help---
+          This is a driver for the Sony IMX119 camera sensor
+          for use with the tegra isp.
+
+config VIDEO_IMX111
+        tristate "IMX111 camera sensor support"
+        depends on I2C && ARCH_TEGRA
+        default y
+        ---help---
+          This is a driver for the IMX111 camera sensor
+          for use with the tegra isp.
+
+config TORCH_LM3559
+	bool "LM3559 FLASH LED"
+	depends on I2C && ARCH_TEGRA
+	default y
+        ---help---
+          This is a driver for the "LM3559 flash/torch camera device
+          
+config VIDEO_DW9714
+        tristate "DW9714 focuser support"
+        depends on I2C && ARCH_TEGRA
+        default y
+        ---help---
+          This is a driver for the DW9714 focuser
+          for use with the tegra isp.
+
+config VIDEO_M24C08
+        tristate "M24C08 eeprom support"
+        depends on I2C && ARCH_TEGRA
+        default y
+        ---help---
+          This is a driver for the ST M24C08 e2prom
+          for use with the tegra isp.
